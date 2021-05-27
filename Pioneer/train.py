@@ -9,7 +9,7 @@ from torchvision import transforms
 import torch.optim.lr_scheduler as lr_scheduler
 
 from Pioneer.model import efficientnet_b0 as create_model
-from Pioneer.my_dataset import MyDataSet
+from Pioneer.utils.my_dataset import MyDataSet
 from Pioneer.utils import read_split_data, train_one_epoch, evaluate
 
 
@@ -19,8 +19,8 @@ def main(args):
     print(args)
     print('Start Tensorboard with "tensorboard --logdir=runs", view at http://localhost:6006/')
     tb_writer = SummaryWriter()
-    if os.path.exists("./weights") is False:
-        os.makedirs("./weights")
+    if os.path.exists("weights") is False:
+        os.makedirs("weights")
 
     train_images_path, train_images_label, val_images_path, val_images_label = read_split_data(args.data_path)
 

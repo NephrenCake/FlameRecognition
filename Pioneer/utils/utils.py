@@ -21,7 +21,7 @@ def read_split_data(root: str, val_rate: float = 0.2):
     # 生成类别名称以及对应的数字索引
     class_indices = dict((k, v) for v, k in enumerate(flower_class))
     json_str = json.dumps(dict((val, key) for key, val in class_indices.items()), indent=4)
-    with open('class_indices.json', 'w') as json_file:
+    with open('../class_indices.json', 'w') as json_file:
         json_file.write(json_str)
 
     train_images_path = []  # 存储训练集的所有图片路径
@@ -79,7 +79,7 @@ def plot_data_loader_image(data_loader):
     batch_size = data_loader.batch_size
     plot_num = min(batch_size, 4)
 
-    json_path = './class_indices.json'
+    json_path = '../class_indices.json'
     assert os.path.exists(json_path), json_path + " does not exist."
     json_file = open(json_path, 'r')
     class_indices = json.load(json_file)
