@@ -16,8 +16,9 @@ import os
 import json
 import torch
 from torchvision import transforms
+
 from Pioneer.model.model import efficientnet_b0 as create_model
-from Pioneer.utils.ui_utils import pie
+from Pioneer.utils.ui_utils import pie, history_save, history_to_chart
 
 
 class Child(QtWidgets.QMainWindow):
@@ -31,6 +32,22 @@ class Child(QtWidgets.QMainWindow):
         qfile.close()
 
         self.ui = QUiLoader().load(qfile)
+
+        slm = QStringListModel()  # 创建mode
+
+        os.chdir("history")
+        self.qList = os.listdir()  # 添加的数组数据
+        os.chdir("../")
+
+        slm.setStringList(self.qList)  # 将数据设置到model
+        self.ui.listView.setModel(slm)  # 绑定 listView 和 model
+        self.ui.listView.clicked.connect(self.clickedlist)  # listview 的点击事件
+
+    def clickedlist(self, qModelIndex):
+        chart, df = history_to_chart(f"history/{self.qList[qModelIndex.row()]}")
+        showImage = QImage(chart.data, chart.shape[1], chart.shape[0], QImage.Format_RGB888)
+        self.ui.label.setPixmap(QPixmap.fromImage(showImage))
+        self.ui.textEdit.append(str(df))
 
 
 class Fire:
@@ -107,7 +124,8 @@ class Fire:
             model.load_state_dict(torch.load(model_weight_path, map_location=device))
             model.eval()
 
-            save_file = "history/" + time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + ".csv"
+            save_file = "history/" + time.strftime("%Y_%m_%d_%H_%M_%S", time.localtime()) + ".csv"
+            save_list = []
 
             # 加载图片或者视频
             self.ui.textEdit.append("start inferring...")
@@ -124,6 +142,7 @@ class Fire:
                         showImage = QImage(show.data, show.shape[1], show.shape[0], QImage.Format_RGB888)
                         self.ui.label.setPixmap(QPixmap.fromImage(showImage))
 
+                        # predict
                         with torch.no_grad():
                             # [N, C, H, W]
                             img = data_transform(img)
@@ -138,6 +157,7 @@ class Fire:
                         print_res = "class: {}   prob: {:.3}".format(class_indict[str(predict_cla)],
                                                                      predict_data[predict_cla].numpy())
                         predict_data = np.array(predict_data).tolist()
+                        save_list.append(predict_data)
 
                         # 文本框追加输出命令行
                         self.ui.textEdit.append(str(predict_data))
@@ -156,6 +176,7 @@ class Fire:
                 showImage = QImage(show.data, show.shape[1], show.shape[0], QImage.Format_RGB888)
                 self.ui.label.setPixmap(QPixmap.fromImage(showImage))
 
+                # predict
                 with torch.no_grad():
                     # [N, C, H, W]
                     img = data_transform(img)
@@ -170,6 +191,7 @@ class Fire:
                 print_res = "class: {}   prob: {:.3}".format(class_indict[str(predict_cla)],
                                                              predict_data[predict_cla].numpy())
                 predict_data = np.array(predict_data).tolist()
+                save_list.append(predict_data)
 
                 # 文本框追加输出命令行
                 self.ui.textEdit.append(str(predict_data))
@@ -179,6 +201,7 @@ class Fire:
                 showImage = QImage(show.data, show.shape[1], show.shape[0], QImage.Format_RGB888)
                 self.ui.label_2.setPixmap(QPixmap.fromImage(showImage))
 
+            history_save(save_list, save_file)  # 保存历史记录
             self.ui.textEdit.append("save successful! " + save_file + "\n")
 
         _thread.start_new_thread(in_pre, ())
