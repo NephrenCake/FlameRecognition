@@ -59,7 +59,7 @@ def pie(predict_data):
 
 
 def history_save(predict_data, save_file):
-    df = pd.DataFrame(predict_data, columns=['弱火', '正常', '过火'], dtype=float)
+    df = pd.DataFrame(predict_data, columns=['弱火', '正常', '过火', '结果'], dtype=float)
     df.to_csv(save_file)
 
 

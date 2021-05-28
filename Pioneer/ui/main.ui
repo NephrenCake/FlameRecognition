@@ -133,17 +133,15 @@ p, li { white-space: pre-wrap; }
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="btn_lead">
+         <widget class="QPushButton" name="btn_open">
           <property name="font">
            <font>
             <family>楷体</family>
             <pointsize>12</pointsize>
-            <weight>50</weight>
-            <bold>false</bold>
            </font>
           </property>
           <property name="text">
-           <string>导入文件</string>
+           <string>选择文件夹</string>
           </property>
           <property name="checkable">
            <bool>true</bool>
@@ -159,6 +157,37 @@ p, li { white-space: pre-wrap; }
            <size>
             <width>90</width>
             <height>26</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btn_lead">
+          <property name="font">
+           <font>
+            <family>楷体</family>
+            <pointsize>12</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>选择文件</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>90</width>
+            <height>38</height>
            </size>
           </property>
          </spacer>
@@ -182,14 +211,14 @@ p, li { white-space: pre-wrap; }
          </widget>
         </item>
         <item>
-         <spacer name="verticalSpacer_4">
+         <spacer name="verticalSpacer_3">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
             <width>90</width>
-            <height>38</height>
+            <height>26</height>
            </size>
           </property>
          </spacer>
@@ -204,35 +233,6 @@ p, li { white-space: pre-wrap; }
           </property>
           <property name="text">
            <string>历史记录</string>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="verticalSpacer_3">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>90</width>
-            <height>26</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QPushButton" name="btn_open">
-          <property name="font">
-           <font>
-            <family>楷体</family>
-            <pointsize>12</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>设置参数</string>
           </property>
           <property name="checkable">
            <bool>true</bool>
