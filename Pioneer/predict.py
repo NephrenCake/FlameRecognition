@@ -1,6 +1,7 @@
 import os
 import json
 import pandas as pd
+import time
 import torch
 from PIL import Image
 from torchvision import transforms
@@ -8,7 +9,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from Pioneer.model import efficientnet_b0 as create_model
 from Pioneer.DV import DV
-
+from Pioneer.history_record import history
 
 def main():
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -40,7 +41,7 @@ def main():
         rval = False
     frames =vc.get(cv2.CAP_PROP_FRAME_COUNT)
     print("视频总帧数:%s"%frames)
-
+    number=int(frames)
 
     for i in range(int(frames)):  # 循环读取视频帧
         rval, img = vc.read()
@@ -83,7 +84,11 @@ def main():
         predict_data = np.array(predict).tolist()
         dv = DV()
         dv.pie(predict_data)
+        ###历史纪录
+        now_time=time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
+        history(now_time,number,predict_data[0],predict_data[1],predict_data[2])#将数据保存到历史记录中
+        #####
         cv2.waitKey(1)
     vc.release()
     # load image
@@ -129,6 +134,7 @@ def main():
     predict_data = np.array(predict).tolist()
     dv = DV()
     dv.pie(predict_data)
+
 
 
 if __name__ == '__main__':
