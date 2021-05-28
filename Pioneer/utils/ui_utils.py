@@ -33,10 +33,10 @@ def pie(predict_data):
     # 去掉图片四周的空白
 
     # 设置画布大小（单位为英寸），每1英寸有100个像素
-    fig1.set_size_inches(4, 3)
-    plt.gca().xaxis.set_major_locator(plt.NullLocator())  # plt.gca()表示获取当前子图"Get Current Axes"。
-    plt.gca().yaxis.set_major_locator(plt.NullLocator())
-    plt.margins(0, 0)
+    # fig1.set_size_inches(4, 3)
+    # plt.gca().xaxis.set_major_locator(plt.NullLocator())  # plt.gca()表示获取当前子图"Get Current Axes"。
+    # plt.gca().yaxis.set_major_locator(plt.NullLocator())
+    # plt.margins(0, 0)
 
     # 获取Plt的数据并使用cv2进行保存
     buffer = io.BytesIO()  # 获取输入输出流对象
@@ -53,13 +53,13 @@ def pie(predict_data):
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
     plt.clf()  # 防止内存泄漏。清除当前figure的所有axes，但是不关闭这个window，所以能继续复用于其他的plot。
-    # plt.close()  # 关闭 window，如果没有指定，则指当前 window
+    plt.close()  # 关闭 window，如果没有指定，则指当前 window
 
     return img
 
 
 def history_save(predict_data, save_file):
-    df = pd.DataFrame(predict_data, columns=['弱火', '正常', '过火', '结果'], dtype=float)
+    df = pd.DataFrame(predict_data, columns=['结果', '概率', '弱火', '正常', '过火'], dtype=float)
     df.to_csv(save_file)
 
 
@@ -68,6 +68,7 @@ def history_to_chart(file):
     data_frame = pd.read_csv(file, index_col=0, encoding='utf-8', low_memory=False)
 
     chart_data = data_frame.drop('结果', axis=1)
+    chart_data = chart_data.drop('概率', axis=1)
     fig1, ax1 = plt.subplots()
 
     ax1.plot(chart_data)

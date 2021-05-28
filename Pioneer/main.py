@@ -17,6 +17,7 @@ from torchvision import transforms
 from Pioneer.model.model import efficientnet_b0 as create_model
 from Pioneer.utils.ui_utils import pie, history_save, history_to_chart
 
+
 # import warnings
 #
 # warnings.simplefilter("error")
@@ -124,7 +125,7 @@ class Fire:
             # create model
             model = create_model(num_classes=3).to(device)
             # load model weights
-            model_weight_path = "weights/model-0.pth"
+            model_weight_path = "weights/B0-model-4.pth"
             model.load_state_dict(torch.load(model_weight_path, map_location=device))
             model.eval()
 
@@ -175,8 +176,12 @@ class Fire:
                             showImage = QImage(show.data, show.shape[1], show.shape[0], QImage.Format_RGB888)
                             self.ui.label_2.setPixmap(QPixmap.fromImage(showImage))
 
-                            predict_data.append("{}:{:.3}-{}".format(class_indict[str(predict_cla)], pro, file))
-                            save_list.append(predict_data)
+                            save_data = [str(class_indict[str(predict_cla)]),
+                                         "{:.3}".format(pro),
+                                         predict_data[0],
+                                         predict_data[1],
+                                         predict_data[2]]
+                            save_list.append(save_data)
 
                 elif file and file.endswith(".jpg"):
                     # load image
@@ -211,8 +216,12 @@ class Fire:
                     showImage = QImage(show.data, show.shape[1], show.shape[0], QImage.Format_RGB888)
                     self.ui.label_2.setPixmap(QPixmap.fromImage(showImage))
 
-                    predict_data.append("{}:{:.3}-{}".format(class_indict[str(predict_cla)], pro, file))
-                    save_list.append(predict_data)
+                    save_data = [str(class_indict[str(predict_cla)]),
+                                 "{:.3}".format(pro),
+                                 predict_data[0],
+                                 predict_data[1],
+                                 predict_data[2]]
+                    save_list.append(save_data)
 
             history_save(save_list, save_file)  # 保存历史记录
             self.ui.textEdit.append("save successful! " + save_file + "\n")
