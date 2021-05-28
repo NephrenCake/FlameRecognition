@@ -67,9 +67,10 @@ def history_to_chart(file):
     plt.rcParams['font.sans-serif'] = ['Microsoft Yahei']
     data_frame = pd.read_csv(file, index_col=0, encoding='utf-8', low_memory=False)
 
+    chart_data = data_frame.drop('结果', axis=1)
     fig1, ax1 = plt.subplots()
 
-    ax1.plot(data_frame)
+    ax1.plot(chart_data)
 
     canvas = fig1.canvas
     # 获取Plt的数据并使用cv2进行保存

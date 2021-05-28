@@ -34,18 +34,17 @@ class Child(QtWidgets.QMainWindow):
 
         self.ui = QUiLoader().load(qfile)
 
-        slm = QStringListModel()  # 创建mode
+        self.slm = QStringListModel()  # 创建mode
 
-        os.chdir("history")
-        self.qList = os.listdir()  # 添加的数组数据
-        os.chdir("../")
+        # self.qList = os.listdir("history")  # 添加的数组数据
 
-        slm.setStringList(self.qList)  # 将数据设置到model
-        self.ui.listView.setModel(slm)  # 绑定 listView 和 model
+        self.slm.setStringList(os.listdir("history"))  # 将数据设置到model
+        self.ui.listView.setModel(self.slm)  # 绑定 listView 和 model
         self.ui.listView.clicked.connect(self.clicked_list)  # listview 的点击事件
 
     def clicked_list(self, qModelIndex):
-        chart, df = history_to_chart(f"history/{self.qList[qModelIndex.row()]}")
+        qList = os.listdir("history")
+        chart, df = history_to_chart(f"history/{qList[qModelIndex.row()]}")
         show_image = QImage(chart.data, chart.shape[1], chart.shape[0], QImage.Format_RGB888)
         self.ui.label.setPixmap(QPixmap.fromImage(show_image))
         self.ui.textEdit.append(str(df))
@@ -73,6 +72,7 @@ class Fire:
         self.choice_type = None
 
     def show_child(self):
+        self.child_window.slm.setStringList(os.listdir("history"))
         self.child_window.ui.show()
 
     def open_video(self):
@@ -136,7 +136,7 @@ class Fire:
 
             for file in self.files:
 
-                time.sleep(0.1)  # 等待打印信息
+                # time.sleep(0.1)  # 等待打印信息
 
                 if file and file.endswith(".mp4"):
                     vc = cv2.VideoCapture(file)
@@ -175,7 +175,7 @@ class Fire:
                             showImage = QImage(show.data, show.shape[1], show.shape[0], QImage.Format_RGB888)
                             self.ui.label_2.setPixmap(QPixmap.fromImage(showImage))
 
-                            predict_data.append("{}:{:.3}".format(class_indict[str(predict_cla)], pro))
+                            predict_data.append("{}:{:.3}-{}".format(class_indict[str(predict_cla)], pro, file))
                             save_list.append(predict_data)
 
                 elif file and file.endswith(".jpg"):
@@ -211,7 +211,7 @@ class Fire:
                     showImage = QImage(show.data, show.shape[1], show.shape[0], QImage.Format_RGB888)
                     self.ui.label_2.setPixmap(QPixmap.fromImage(showImage))
 
-                    predict_data.append("{}:{:.3}".format(class_indict[str(predict_cla)], pro))
+                    predict_data.append("{}:{:.3}-{}".format(class_indict[str(predict_cla)], pro, file))
                     save_list.append(predict_data)
 
             history_save(save_list, save_file)  # 保存历史记录
