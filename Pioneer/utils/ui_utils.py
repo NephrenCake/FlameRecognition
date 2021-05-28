@@ -51,4 +51,7 @@ def pie(predict_data):
 
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
+    plt.clf()  # 防止内存泄漏。清除当前figure的所有axes，但是不关闭这个window，所以能继续复用于其他的plot。
+    # plt.close()  # 关闭 window，如果没有指定，则指当前 window
+
     return img
