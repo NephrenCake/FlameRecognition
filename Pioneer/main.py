@@ -245,6 +245,9 @@ class Fire:
             if cur_file.endswith(".mp4") or cur_file.endswith(".jpg"):
                 self.files.append(os.path.join(file_dir, cur_file))
 
+        print(os.listdir(file_dir))
+        print(self.files)
+
 
 if __name__ == '__main__':
     app = QApplication()

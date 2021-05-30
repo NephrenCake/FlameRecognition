@@ -30,14 +30,6 @@ def pie(predict_data):
 
     canvas = fig1.canvas
 
-    # 去掉图片四周的空白
-
-    # 设置画布大小（单位为英寸），每1英寸有100个像素
-    # fig1.set_size_inches(4, 3)
-    # plt.gca().xaxis.set_major_locator(plt.NullLocator())  # plt.gca()表示获取当前子图"Get Current Axes"。
-    # plt.gca().yaxis.set_major_locator(plt.NullLocator())
-    # plt.margins(0, 0)
-
     # 获取Plt的数据并使用cv2进行保存
     buffer = io.BytesIO()  # 获取输入输出流对象
     canvas.print_png(buffer)  # 将画布上的内容打印到输入输出流对象
@@ -73,6 +65,9 @@ def history_to_chart(file):
 
     ax1.plot(chart_data)
 
+    plt.xlabel("帧")
+    plt.ylabel("概率")
+
     canvas = fig1.canvas
     # 获取Plt的数据并使用cv2进行保存
     buffer = io.BytesIO()  # 获取输入输出流对象
@@ -89,9 +84,6 @@ def history_to_chart(file):
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
     plt.clf()
-
-    # cv2.imshow("img", img)
-    # cv2.waitKey(0)
 
     return img, data_frame
 
